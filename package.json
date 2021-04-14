@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "vue-loader": "^15.9.6"
+  },
+  "dependencies": {
+    "clipboard": "^2.0.8",
+    "vue-clipboard2": "^0.3.1"
+  }
+}
