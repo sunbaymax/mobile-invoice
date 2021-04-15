@@ -95,7 +95,7 @@
 			this.invoicetype=options.type
 			console.log(options.num)
 			if(options.type==2){
-				//this.logisticsquery(this.logisticsnum)
+				this.logisticsquery(this.logisticsnum)
 			}
 			this.query(options.id)
 		},

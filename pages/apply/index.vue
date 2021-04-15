@@ -233,8 +233,46 @@
 			let _openid = uni.getStorageSync('invoiceopenId');
 			this.openid = _openid
 		},
-
+        mounted() {
+        	this.historyapply()
+        },
 		methods: {
+			historyapply(){
+				let that=this
+				let data={
+					openid:this.openid,
+					limit:1,
+					page:1
+				}
+				$.post('/erp/invoice/page',data).then(cres=>{
+					if(cres.code==0&&cres.data.data.length>0){
+						console.log(23)
+						let hid=cres.data.data[0].id
+						let hstate=cres.data.data[0].state
+						let htype=cres.data.data[0].type
+						uni.showModal({
+							content: '您有发票申请记录，是否复用？',
+							cancelText: "取消", // 取消按钮的文字  
+							confirmText: "确认收票", // 确认按钮文字  
+							showCancel: true, // 是否显示取消按钮，默认为 true
+							success: (res) => {
+								if(res.confirm) { 
+									uni.navigateTo({
+										url: '/pages/again/index?id='+hid+'&state='+hstate+'&type='+htype,
+									});
+								} else {  
+									console.log('else', res)
+								}  
+							} 
+						})
+					}else{
+						
+					}
+					console.log(res)
+				}).catch(err=>{
+					console.log(err)
+				})
+			},
 			//加开票人信息联系人
 			addBookinfo(){
 				let obj={

@@ -31,9 +31,9 @@
 								<view class="yuan first" :class="{'act':sindex==0}"></view>
 							</view>
 							<view class="desc black">
-								<view class="desc">{{sitem.state|state}}{{sitem.reason==''?'':"("+sitem.reason+")"}}
+								<view class="desc ">{{sitem.state|state}}{{sitem.reason==''?'':"("+sitem.reason+")"}}
 								
-								<uni-tag text="查看物流" type="default" :circle="true" size="small" @click="bindlogistics()" style="width: 50px;" v-show="sitem.state==11"></uni-tag>
+								<uni-tag text="查看物流" type="success" :circle="true" size="small" @click="bindlogistics()" style="width: 50px;margin-left: 15px;" v-show="sitem.state==11"></uni-tag>
 								</view> 
 							</view>
 						</view>
