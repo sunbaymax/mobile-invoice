@@ -116,7 +116,7 @@
 				</view>
 				<view class="bookList">
 					<radio-group @change="radioChange" style="display: flex;flex-direction: column;line-height: 60upx ;">
-						<view v-for="(item, index) in Bookitems" class="bookListItem">
+						<view v-for="(item, index) in Bookitems" class="bookListItem" :key="item.name+item.id">
 							<view class="bookItemlt">
 								<radio :value="item.value" :checked="index === current" style="transform:scale(0.7)" />
 				<!-- 				<view class="bookItemcenter">

@@ -37,7 +37,7 @@
 			</view>
 		</view>
         <view class="data">
-			<view class="itemlist" v-for="(item,index) in list">
+			<view class="itemlist" v-for="(item,index) in list" :key="item.id+item.create_time">
 				<view class="itemlist-lt">{{list.length-index}}</view>
 				<view class="itemlist-rt">
 					<view class="itemlist-top">

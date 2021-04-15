@@ -22,8 +22,12 @@
 	export default {
 		data() {
 			return {
+<<<<<<< HEAD
 				openid:'',
 				active:'',
+=======
+				active:0,
+>>>>>>> 8f80766e3c827511f24196ad7bf0db61fb81ef3c
 				listdata: [
 					{
 						title:'发票申请',
@@ -36,6 +40,7 @@
 				]
 			}
 		},
+<<<<<<< HEAD
 		onLoad() {
 			if(window.localStorage.getItem('intoinvoiceindex')===null){
 				this.active=0
@@ -66,6 +71,19 @@
 				    });
 				}else{
 					uni.navigateTo({
+=======
+		methods: {
+            bindchoose(index){
+				this.active=index
+			},
+			nowgo(){
+				if(this.active==0){
+				    uni.reLaunch({
+					  url:"../apply/index"
+				    });
+				}else{
+					uni.reLaunch({
+>>>>>>> 8f80766e3c827511f24196ad7bf0db61fb81ef3c
 					  url:"../list/index"
 					});
 				}
