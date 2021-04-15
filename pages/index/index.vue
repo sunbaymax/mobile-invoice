@@ -1,7 +1,7 @@
 <template>
 	<view class="container">		
 		<view class="content">
-			<view class="listItem" v-for="(item,index) in listdata" @click="bindchoose(index)">
+			<view class="listItem" v-for="(item,index) in listdata" @click="bindchoose(index)" :key="item.title+item.desc">
 				<view class="left">
 					<text :class="[{ active: index==active }, 'titleText']">{{item.title}}</text>
 					<text :class="[{ active: index==active }, 'descText']">{{item.desc}}</text>
@@ -22,12 +22,8 @@
 	export default {
 		data() {
 			return {
-<<<<<<< HEAD
 				openid:'',
 				active:'',
-=======
-				active:0,
->>>>>>> 8f80766e3c827511f24196ad7bf0db61fb81ef3c
 				listdata: [
 					{
 						title:'发票申请',
@@ -40,7 +36,6 @@
 				]
 			}
 		},
-<<<<<<< HEAD
 		onLoad() {
 			if(window.localStorage.getItem('intoinvoiceindex')===null){
 				this.active=0
@@ -71,19 +66,6 @@
 				    });
 				}else{
 					uni.navigateTo({
-=======
-		methods: {
-            bindchoose(index){
-				this.active=index
-			},
-			nowgo(){
-				if(this.active==0){
-				    uni.reLaunch({
-					  url:"../apply/index"
-				    });
-				}else{
-					uni.reLaunch({
->>>>>>> 8f80766e3c827511f24196ad7bf0db61fb81ef3c
 					  url:"../list/index"
 					});
 				}
