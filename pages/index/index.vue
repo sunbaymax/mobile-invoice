@@ -19,6 +19,7 @@
 </template>
 
 <script>
+	import { getUrlKey } from '../../utils/url.js';
 	export default {
 		data() {
 			return {
@@ -44,7 +45,7 @@
 				
 			}
 			if(window.localStorage.getItem('invoiceopenId')===null){
-			  let urlOpenid = this.$geturl.getUrlKey('openId')
+			  let urlOpenid  = getUrlKey("openId")
 			  this.openid=urlOpenid==null?'':urlOpenid
 			  if(urlOpenid!==null||urlOpenid!=''){
 			   window.localStorage.setItem('invoiceopenId',urlOpenid)

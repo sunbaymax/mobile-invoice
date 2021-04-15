@@ -261,14 +261,13 @@
 										url: '/pages/again/index?id='+hid+'&state='+hstate+'&type='+htype,
 									});
 								} else {  
-									console.log('else', res)
+									console.log('取消复用')
 								}  
 							} 
 						})
 					}else{
 						
 					}
-					console.log(res)
 				}).catch(err=>{
 					console.log(err)
 				})
