@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<view v-if="list.length>0">
+		<view v-show="!nomore">
 		<view class="fixed">
 			<view class="tabs choosebtn">
 				<liuyuno-tabs
@@ -73,7 +73,7 @@
 		</view>
 	   <uni-load-more :status="status" :icon-size="16" :content-text="contentText"></uni-load-more>
 	   </view>
-	   <view class="nomore" v-else>
+	   <view class="nomore" v-show="nomore">
 	   	<image src="../../static/image/nodata.png"></image>
 	   </view>
 	</view>
@@ -178,7 +178,8 @@
 				},
 				// 下一页链接
 				next_url: false,
-				company:''
+				company:'',
+				nomore:false
 				
 			}
 		},
@@ -195,7 +196,7 @@
 			}
 		},
 		mounted(){
-			this.get_list()
+			this.initget_list()
 		},
 		onPullDownRefresh() {
 			// 下拉刷新
@@ -208,6 +209,7 @@
 		
 		},
 		onReachBottom() {
+			this.page=this.page+1
 			// 获取更多数据,
 			this.status = 'more';
 			console.log(' 获取更多数据')
@@ -282,12 +284,31 @@
 			},
 			get_list: function() {
 				// 请求提交的参数
-				let data={
-					openid:this.openid,
-					page: this.page,
-					limit: 5,
-					state:this.activeIndex==0?'':this.activeIndex
+				let data={}
+				if(this.startTime!='请选择开始时间'&&this.endTime=='请选择结束时间'){
+					uni.showToast({
+						image: '../../static/image/error.png',
+						title: "结束时间不能为空"
+					});
+					return false;
+				}else if(this.startTime=='请选择开始时间'&&this.endTime!='请选择结束时间'){
+					uni.showToast({
+						image: '../../static/image/error.png',
+						title: "开始时间不能为空"
+					});
+					return false;
+				}else if(this.startTime!='请选择开始时间'&&this.endTime!='请选择结束时间'){
+					data.start=this.startTime,
+					data.end=this.endTime
 				}
+				if(this.company!=''){
+					this.page=1
+					data.company_name=this.company
+				}
+					data.openid=this.openid;
+					data.page=this.page;
+					data.limit=5;
+					data.state=this.activeIndex==0?'':this.activeIndex;
 				    let t = this;
 					let url = "/erp/invoice/page";
 					let params =data;
@@ -299,20 +320,20 @@
 							}else if(res.data.data.length<5){
 								this.status='nomore'
 								this.list=this.list.concat(res.data.data)
-								this.page=this.page+1
+								// this.page=this.page+1
 								return false
 							}else{
 								this.list=this.list.concat(res.data.data)
-								this.page=this.page+1
+								// this.page=this.page+1
 							}
 						}else{
 							if(res.code==0&&res.data.data.length==0){
 								this.status='nomore'
 								this.list=[]
-								this.page=this.page+1
+								// this.page=this.page+1
 							}else if(res.code==0&&res.data.data.length>=5){
 								this.list=res.data.data
-								this.page=this.page+1
+								// this.page=this.page+1
 							}else{
 								this.list=res.data.data
 								this.status='nomore'
@@ -324,6 +345,39 @@
 					})
 	
 
+			
+			},
+			initget_list: function() {
+				// 请求提交的参数
+				let data={
+					openid:this.openid,
+					page: this.page,
+					limit: 5,
+				}
+				let url = "/erp/invoice/page";
+				let params =data;
+					$.post(url,params).then(res =>{
+						console.log(res)
+						if(res.code==0&&res.data.data.length==0){
+							this.status='nomore'
+							this.list=[]
+							this.nomore=true
+						}else if(res.code==0&&res.data.data.length>=5){
+							this.list=res.data.data
+							// this.page=this.page+1
+							this.nomore=false
+						}else{
+							this.list=res.data.data
+							this.status='nomore'
+							// this.page=this.page+1
+							this.nomore=false
+						}
+						
+					}).catch(err =>{
+						console.log(err)
+					})
+				
+			
 			
 			}
 			
