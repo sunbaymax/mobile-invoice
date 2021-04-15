@@ -1,0 +1,68 @@
+{
+	"pages": [{
+		"path": "pages/index/index",
+		"style": {
+			"navigationBarTitleText": "我的发票"
+		}
+	},{
+		"path": "pages/apply/index",
+		"style": {
+			"navigationBarTitleText": "发票申请"
+		}
+	},{
+		"path": "pages/info/index",
+		"style": {
+			"navigationBarTitleText": "发票详情"
+		}
+	},{
+		"path": "pages/again/index",
+		"style": {
+			"navigationBarTitleText": "重新开票"
+		}
+	},{
+		"path": "pages/list/index",
+		"style": {
+			"navigationBarTitleText": "发票列表"
+		}
+	},{
+		"path": "pages/logisticsinfo/index",
+		"style": {
+			"navigationBarTitleText": "物流信息",
+			"navigationBarTextStyle":"white"
+		}
+	},{
+		"path": "pages/return/index",
+		"style": {
+			"navigationBarTitleText": "我要退票",
+			"navigationBarTextStyle":"white"
+		}
+	},{
+		"path": "pages/change/index",
+		"style": {
+			"navigationBarTitleText": "我要换票",
+			"navigationBarTextStyle":"white"
+		}
+	},{
+		"path": "pages/changehistory/index",
+		"style": {
+			"navigationBarTitleText": "换票记录",
+			"navigationBarTextStyle":"white"
+		}
+	},{
+		"path": "pages/test/index",
+		"style": {
+			"navigationBarTitleText": "测试",
+			"navigationBarTextStyle":"white"
+		}
+	}],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#1B4CEF",
+		"backgroundColor": "#1B4CEF",
+		"app-plus": {
+			"background": "#efeff4"
+		}
+	}
+
+}
