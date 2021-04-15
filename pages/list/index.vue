@@ -50,11 +50,11 @@
 							<text v-else class="overtxt">{{item.state|state}}</text>
 						</view>
 						<view class="itemlist-top-tb">
-							<text class="companyname">企业名称：{{item.company_name}}</text>
+							<text class="companyname">{{item.company_name}}</text><text class="invoicenum" v-show="item.invoice_num!=null">发票号：{{item.invoice_num}}</text>
 						</view>
-						<view class="itemlist-top-tb" v-show="item.state==4||item.state==7||item.state==11||item.state==12">
-							<text class="invoicenum">开票号：{{item.invoice_num}}</text>
-						</view>
+						<!-- <view class="itemlist-top-tb" v-show="item.state==4||item.state==7||item.state==11||item.state==12">
+							
+						</view> -->
 					</view>
 					<view class="itemlist-bottom">
 						<view>
@@ -407,7 +407,7 @@
 			position: relative;
 			display: flex;
 			flex-direction: row;
-			padding-right:15px;
+			padding-right:30upx;
 			box-sizing: border-box;
 			font-size: 14px;
 			.itemlist-lt{
@@ -456,10 +456,12 @@
 					}
 					.itemlist-top-tb{
 						height: 60upx;
-						align-items: center;
+						align-items: flex-start;
+						display: flex;
+						justify-content: space-between;
 						.companyname{
 							display: inline-block;
-							width: 300px;
+							width: 340upx;
 							overflow: hidden;/*超出部分隐藏*/
 							white-space: nowrap;/*不换行*/
 							text-overflow:ellipsis;/*超出部分文字以...显示*/
@@ -471,7 +473,7 @@
 					display: flex;
 					justify-content: space-between;
 					align-items: flex-start;
-					height: 80upx;
+					height: 72upx;
 					.descbtn{
 						margin-left: 15px;
 						color: #1B4CEF;
