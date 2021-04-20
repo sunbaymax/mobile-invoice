@@ -33,7 +33,8 @@
 			</view>
 			<view class="queryline">
 				<input v-model="company" placeholder="按公司名称查询" class="companyinput"/>
-				<button class="mini-btn" type="primary" size="mini" @click="get_list()">查询</button>
+				<!-- <button class="mini-btn" type="primary" size="mini" @click="get_list()">查询</button> -->
+				<uni-tag text="查询" type="primary" :circle="true"  @click="get_list()" style="margin-left: 15px;"></uni-tag>
 			</view>
 		</view>
         <view class="data">
@@ -243,23 +244,41 @@
 			},
 			//删除发票
 			binddelbtn(id){
-				console.log(id)
-				let obj={
-					id
-				}
-				$.post('/erp/invoice/delete',obj).then(res=>{
-					console.log(res)
-					if(res.code==0){
-						uni.showToast({
-							title: "删除成功!"
-						});
-						setTimeout(() => {
-							window.location.reload()
-						}, 1500)
-					}
-				}).catch(err=>{
-					console.log(err)
-				})
+				uni.showModal({
+				    title: '删除提示',
+				    content: '请确定是否删除发票？',
+				    success: function (result) {
+				        if (result.confirm) {
+				            console.log('用户点击确定');
+							console.log(id)
+							let obj={
+								id
+							}
+							$.post('/erp/invoice/delete',obj).then(res=>{
+								console.log(res)
+								if(res.code==0){
+									uni.showToast({
+										title: "删除成功!"
+									});
+									setTimeout(() => {
+										window.location.reload()
+									}, 1500)
+								}else{
+									uni.showToast({
+										image: '../../static/image/error.png',
+										title: res.message
+									});
+									return false;
+								}
+							}).catch(err=>{
+								console.log(err)
+							})
+				        } else if (result.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
+
 			},
 			bindChange(e){
 				console.log(e)
@@ -406,18 +425,38 @@
 	
 	.searchTime{
 		display: flex;
-		border-bottom: 1px solid #dedede;
+		// border-bottom: 1px solid #dedede;
 		margin-bottom: 1px;
+		width: 98%;
+		.rui-picker{
+			width: 49%!important;
+			background: #fff;
+			font-size: 14px;
+			border:none;
+			color: #333;
+		}
+		.rui-picker:last-child{
+			width: 49%!important;
+			background: #fff;
+			font-size: 14px;
+			border:none;
+			border-left: none;
+			display: flex;
+			justify-content: flex-end;
+		}
 	}
 	.queryline {
 		display: flex;
 		color: #000;
-		border-bottom: 1px solid #dedede;
 		margin-bottom: 1px;
+		align-items: center;
+		width: 94%;
+		justify-content: space-between;
 		.uni-input-placeholder {
 		   color: #000!important;
 		}
 		input{
+			color: #333;
 			width: 50% !important;
 			height: 10vw;
 			padding-left: 12px;
@@ -427,29 +466,14 @@
 			border: none;
 			border-left: none;
 			color: #000;
-			
+			// border-bottom: 1px solid #dedede;
 		}
-		button{
-			width: 48%;
-		}
+
 	}
 	.uni-easyinput{
 		width: 60%!important;
 	}
-	.rui-picker{
-		width: 50%!important;
-		background: #fff;
-		font-size: 14px;
-		border:none;
-		
-	}
-	.rui-picker:last-child{
-		width: 50%!important;
-		background: #fff;
-		font-size: 14px;
-		border:none;
-		border-left: none;
-	}
+
 	.data{
 	    box-sizing: border-box;
 		.itemlist{

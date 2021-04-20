@@ -119,14 +119,16 @@
 						<view v-for="(item, index) in Bookitems" class="bookListItem">
 							<view class="bookItemlt">
 								<radio :value="item.value" :checked="index === current" style="transform:scale(0.7)" />
-				<!-- 				<view class="bookItemcenter">
-									<text>{{item.value}}</text>
-									<text>
-									  <text class="bookname">{{item.name}}</text>
-									  <text>{{item.phone}}</text>
-									</text>
-								</view> -->
 								<view class="bookItemcenter">
+									<view class="bookCompany overhide">
+										{{item.value}}
+									</view>
+									<view style="display: flex;">
+									  <text class="bookname overhide">{{item.name}}</text>
+									  <text class="bookphone overhide">{{item.phone}}</text>
+									</view>
+								</view>
+						<!-- 		<view class="bookItemcenter">
 									<view class="">
 										<input type="text" class="uni-input bookCompany" v-model="item.value" placeholder="收货人地址"/>
 									</view>
@@ -134,14 +136,21 @@
 									  <input type="text" class="uni-input bookname" v-model="item.name" placeholder="联系人姓名"/>
 									  <input type="text" class="uni-input bookphone" v-model="item.phone" placeholder="联系人手机号"/>
 									</view>
-								</view>
+								</view> -->
 							</view>
 							<view class="bookItemrt">
-							  <uni-icons type="compose" size="24" class="bookclose"  @click="bookedit(item)"></uni-icons>
+							  <uni-icons type="compose" size="24" class="bookclose"  @click="bookedit(item)" v-show="item.value==''&&item.name==''&&item.phone==''"></uni-icons> 
+							  <uni-icons type="compose" size="24" class="bookclose" color="#007aff"  @click="bookedit(item)" v-show="item.value!=''&&item.name!=''&&item.phone!=''"></uni-icons>
 							</view>
 						</view>
 					</radio-group>
-					<button class="addbookbtn" type="primary" style="border-radius: 30px;" @click="addBookinfo">新增开票人信息</button>
+					<view class="footerbtn">
+						<uni-tag text="选择" type="success" :circle="true" @click="bookchooseok"></uni-tag>
+						<uni-tag text="删除" type="error" :circle="true"  @click="bookchoosedel"></uni-tag>
+						<uni-tag text="新增" type="primary" :circle="true" @click="addBookinfo"></uni-tag>
+						<!-- <button class="addbookbtn" type="warn" style="border-radius: 30px;" @click="addBookinfo" size="mini">删除</button>
+						<button class="addbookbtn" type="primary" style="border-radius: 30px;" @click="addBookinfo" size="mini">新增</button> -->
+					</view>
 				</view>
 			</view>
 		</uni-popup>
@@ -152,6 +161,7 @@
 <script>
 	// import utils from '../../commons/request.js';
 	import $ from '../../common/tsRequest.js'
+	import qs from 'qs';
 	import WCompress from '@/components/w-compress/w-compress.vue'
 	let isok = true
 	var sourceType = [
@@ -226,12 +236,18 @@
 				current: '',
 			};
 		},
-
 		onLoad(options) {
 			// 页面显示是默认选中第一个
 			this.tabCurrentIndex = 0;
 			let _openid = uni.getStorageSync('invoiceopenId');
 			this.openid = _openid
+		},
+		onShow: function () {
+		  	console.log('show')
+			this.$nextTick(function(){
+				this.$refs.popup.close()
+			})
+			
 		},
         mounted() {
         	this.historyapply()
@@ -253,7 +269,7 @@
 						uni.showModal({
 							content: '您有发票申请记录，是否复用？',
 							cancelText: "取消", // 取消按钮的文字  
-							confirmText: "确认收票", // 确认按钮文字  
+							confirmText: "确认复用", // 确认按钮文字  
 							showCancel: true, // 是否显示取消按钮，默认为 true
 							success: (res) => {
 								if(res.confirm) { 
@@ -274,54 +290,57 @@
 			},
 			//加开票人信息联系人
 			addBookinfo(){
-				let obj={
-						value: '',
-						phone:'',
-						name: ''
-					}
-				this.Bookitems=this.Bookitems.concat(obj)	
+				uni.navigateTo({
+					url:'../bookmanage/index'
+				})
+				return false;
+				// let obj={
+				// 		value: '',
+				// 		phone:'',
+				// 		name: ''
+				// 	}
+				// this.Bookitems=this.Bookitems.concat(obj)	
+			},
+			del(id){
+	　　　　　　　　this.Bookitems.some((item, i)=>{
+	　　　　　　　　　　if(i==id){
+	　　　　　　　　　　　　this.Bookitems.splice(i, 1)
+	　　　　　　　　　　　　//在数组的some方法中，如果return true，就会立即终止这个数组的后续循环
+	　　　　　　　　　　　　return true
+	　　　　　　　　　　}
+	　　　　　　　　})
+	              this.current=''　　　　　　
+	　　　　　},
+			//删除开票人信息联系人
+			bookchoosedel(){
+			   let _id=[]
+			  _id.push(this.Bookitems[this.current].id)
+			  console.log(_id)
+			   let _data={
+				   id:_id
+			   }
+			  
+			   $.post('/erp/addressBook/del', qs.stringify(_data)).then(res=>{
+				   console.log(res)
+				   if(res.code==0){
+					   uni.showToast({
+					      title:'删除成功'
+					   })
+					  this.del(this.current)
+				   }else{
+					   uni.showToast({
+						  image: '../../static/image/error.png',
+					      title:'删除成功'
+					   })
+				   }
+			   }).catch(err=>{
+				   console.log(err)
+			   })
 			},
 			bookedit(item){
-				console.log(item)
-				let obj={}
-				obj.openid=this.openid
-				obj.name=item.name
-				obj.address=item.value
-				obj.phone=item.phone
-				let url='/erp/addressBook/edit'
-				if(item.id==undefined||item.id==''){
-					url='/erp/addressBook/add'
-				}else{
-					obj.id=item.id
-					url='/erp/addressBook/edit'
-				}
-				console.log(item.id)
-				if(item.name!=''&&item.value!=''&&item.phone!=''){
-					$.post(url,obj).then(res=>{
-						if(res.code==0){
-							if(item.id==undefined||item.id==''){
-								uni.showToast({
-									title: "新增成功!"
-								})
-							}else{
-								uni.showToast({
-									title: "修改成功!"
-								})
-							}
-							
-						}else{
-							uni.showToast({
-								image: '../../static/image/error.png',
-								title: res.message
-							});
-							return false;
-						}
-					}).catch(err=>{
-						
-					})
-				}
-		
-				
+				uni.navigateTo({
+					url:'../bookmanageedit/index?id='+item.id
+				})
 			},
 			bookclose(){
 				this.$refs.popup.close()
@@ -334,12 +353,14 @@
 						break;
 					}
 				}
+				
+			},
+			bookchooseok(){
 				console.log(this.current)
 				this.consignee=this.Bookitems[this.current].name
 				this.consignee_address=this.Bookitems[this.current].value
 				this.consignee_phone=this.Bookitems[this.current].phone
 				this.$refs.popup.close()
-				
 			},
 			confirmShare() {
 				this.$refs.popup.open()
@@ -856,7 +877,7 @@
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			margin: 30upx 0;
+			margin-top: 20upx;
 			.bookItemlt{
 				display: flex;
 				align-items: center;
@@ -880,6 +901,11 @@
 			}
 
 		}
+	}
+	.overhide{
+		overflow: hidden;
+		text-overflow:ellipsis;
+		white-space: nowrap;
 	}
 	.body-view {
 		width: 100%;
@@ -1269,7 +1295,7 @@
 			border: none;
 			outline: none;
 			padding: 60upx 0 30upx;
-
+            z-index: 99;
 			button {
 				background: #1B4CEF;
 				border-radius: 60upx;
@@ -1303,7 +1329,12 @@
 				outline: none;
 			}
 		}
-
+        .footerbtn{
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			margin-top: 30upx;
+		}
 
 	}
 </style>

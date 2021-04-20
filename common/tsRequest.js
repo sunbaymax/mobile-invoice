@@ -36,7 +36,7 @@ function post(url, data) {
 			method: 'POST',
 			header: {
 				'content-type': 'application/x-www-form-urlencoded',
-				"accept": "*/*",
+				'Accept': 'application/json'
 			},
 			success: function(res) {
 				if (res.data.code === 200 && res.data.code == 0) {

@@ -54,6 +54,18 @@
 			"navigationBarTitleText": "测试",
 			"navigationBarTextStyle":"white"
 		}
+	},{
+		"path": "pages/bookmanage/index",
+		"style": {
+			"navigationBarTitleText": "新增开票人信息",
+			"navigationBarTextStyle":"white"
+		}
+	},{
+		"path": "pages/bookmanageedit/index",
+		"style": {
+			"navigationBarTitleText": "修改开票人信息",
+			"navigationBarTextStyle":"white"
+		}
 	}],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",

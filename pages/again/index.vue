@@ -4,14 +4,14 @@
 		<view class="content">
 			<!-- 头部 -->
 			<view class="navbar">
-				<view v-for="(item, index) in navList" :key="index" class="nav-item" :class="{ current: tabCurrentIndex === index }"
-				 @click="tabClick(index)">
+				<view v-for="(item, index) in navList" :key="index" class="nav-item"
+					:class="{ current: tabCurrentIndex === index }" @click="tabClick(index)">
 					{{ item.text }}
 				</view>
 			</view>
 			<view class="way">
-				<button v-for="(item, index) in waybtn" :key="index" class="waybtn" :class="{ active: waybtnIndex == item.type }"
-				 @click="tabwaybtn(item.type)">
+				<button v-for="(item, index) in waybtn" :key="index" class="waybtn"
+					:class="{ active: waybtnIndex == item.type }" @click="tabwaybtn(item.type)">
 					{{ item.text }}
 				</button>
 			</view>
@@ -19,11 +19,14 @@
 			<view class="list">
 				<view class="aline" @click="confirmShare" v-show="waybtnIndex === 1">
 					<view class="left" style="color: #333333;font-size: 15px;font-weight: bold;">开票人信息</view>
-					<view class="right" style="text-align: right;width: 100%;"><image src="../../static/image/return.png" class="return" mode=""></image></view>
+					<view class="right" style="text-align: right;width: 100%;">
+						<image src="../../static/image/return.png" class="return" mode=""></image>
+					</view>
 				</view>
 				<view class="aline" v-show="waybtnIndex === 2">
 					<view class="left">邮箱<text class="requisite">*</text>：</view>
-					<view class="right"><input class="uni-input" placeholder="请输入邮箱账号" v-model="consignee_email" /></view>
+					<view class="right"><input class="uni-input" placeholder="请输入邮箱账号" v-model="consignee_email" />
+					</view>
 				</view>
 				<view class="aline" v-show="waybtnIndex === 1">
 					<view class="left">收货人<text class="requisite">*</text>：</view>
@@ -31,11 +34,13 @@
 				</view>
 				<view class="aline" v-show="waybtnIndex === 1">
 					<view class="left">收货人地址<text class="requisite">*</text>：</view>
-					<view class="right"><input class="uni-input" placeholder="收货人地址" v-model="consignee_address" /></view>
+					<view class="right"><input class="uni-input" placeholder="收货人地址" v-model="consignee_address" />
+					</view>
 				</view>
 				<view class="aline">
 					<view class="left">联系方式<text class="requisite">*</text>：</view>
-					<view class="right"><input class="uni-input" placeholder="请输入联系方式" v-model="consignee_phone" /></view>
+					<view class="right"><input class="uni-input" placeholder="请输入联系方式" v-model="consignee_phone" />
+					</view>
 				</view>
 				<view class="aline">
 					<view class="left">公司名称<text class="requisite">*</text>：</view>
@@ -47,11 +52,13 @@
 				</view>
 				<view class="aline">
 					<view class="left">发货编号<text class="requisite">*</text>：</view>
-					<view class="right"><input class="uni-input" placeholder="请输入发货编号" v-model="delivery_number" /></view>
+					<view class="right"><input class="uni-input" placeholder="请输入发货编号" v-model="delivery_number" />
+					</view>
 				</view>
 				<view class="aline" v-show="tabCurrentIndex === 1">
 					<view class="left">经营地址<text class="requisite">*</text>：</view>
-					<view class="right"><input class="uni-input" placeholder="请输入经营地址" v-model="company_address" /></view>
+					<view class="right"><input class="uni-input" placeholder="请输入经营地址" v-model="company_address" />
+					</view>
 				</view>
 				<view class="aline" v-show="tabCurrentIndex === 1">
 					<view class="left">公司电话<text class="requisite">*</text>：</view>
@@ -87,7 +94,9 @@
 
 								</view>
 								<view class='info'>请您务必上传收货的中集智冷成品出库单,否则无法正常开票。示例如下：
-								   <image src="../../static/image/fahuodan.png" data-src="../../static/image/fahuodan.png" class="template-img" @tap="previewLizi"></image>
+									<image src="../../static/image/fahuodan.png"
+										data-src="../../static/image/fahuodan.png" class="template-img"
+										@tap="previewLizi"></image>
 								</view>
 							</view>
 						</view>
@@ -112,36 +121,38 @@
 			<view class="popup-content">
 				<view class="bookTitle">
 					选择开票人信息
-					<uni-icons type="closeempty" size="24" class="bookclose" @click="bookclose" color='#999'></uni-icons>
+					<uni-icons type="closeempty" size="24" class="bookclose" @click="bookclose" color='#999'>
+					</uni-icons>
 				</view>
 				<view class="bookList">
-					<radio-group @change="radioChange" style="display: flex;flex-direction: column;line-height: 60upx ;">
+					<radio-group @change="radioChange"
+						style="display: flex;flex-direction: column;line-height: 60upx ;">
 						<view v-for="(item, index) in Bookitems" class="bookListItem" :key="item.name+item.id">
 							<view class="bookItemlt">
 								<radio :value="item.value" :checked="index === current" style="transform:scale(0.7)" />
-				<!-- 				<view class="bookItemcenter">
-									<text>{{item.value}}</text>
-									<text>
-									  <text class="bookname">{{item.name}}</text>
-									  <text>{{item.phone}}</text>
-									</text>
-								</view> -->
 								<view class="bookItemcenter">
-									<view class="">
-										<input type="text" class="uni-input bookCompany" v-model="item.value" placeholder="收货人地址"/>
+									<view class="bookCompany overhide">
+										{{item.value}}
 									</view>
 									<view style="display: flex;">
-									  <input type="text" class="uni-input bookname" v-model="item.name" placeholder="联系人姓名"/>
-									  <input type="text" class="uni-input bookphone" v-model="item.phone" placeholder="联系人手机号"/>
+										<text class="bookname overhide">{{item.name}}</text>
+										<text class="bookphone overhide">{{item.phone}}</text>
 									</view>
 								</view>
 							</view>
 							<view class="bookItemrt">
-							  <uni-icons type="compose" size="24" class="bookclose"  @click="bookedit(item)"></uni-icons>
+							  <uni-icons type="compose" size="24" class="bookclose"  @click="bookedit(item)" v-show="item.value==''&&item.name==''&&item.phone==''"></uni-icons> 
+							  <uni-icons type="compose" size="24" class="bookclose" color="#007aff"  @click="bookedit(item)" v-show="item.value!=''&&item.name!=''&&item.phone!=''"></uni-icons>
 							</view>
 						</view>
 					</radio-group>
-					<button class="addbookbtn" type="primary" style="border-radius: 30px;" @click="addBookinfo">新增开票人信息</button>
+					<view class="footerbtn">
+						<uni-tag text="选择" type="success" :circle="true" @click="bookchooseok"></uni-tag>
+						<uni-tag text="删除" type="error" :circle="true"  @click="bookchoosedel"></uni-tag>
+						<uni-tag text="新增" type="primary" :circle="true" @click="addBookinfo"></uni-tag>
+						<!-- <button class="addbookbtn" type="warn" style="border-radius: 30px;" @click="addBookinfo" size="mini">删除</button>
+						<button class="addbookbtn" type="primary" style="border-radius: 30px;" @click="addBookinfo" size="mini">新增</button> -->
+					</view>
 				</view>
 			</view>
 		</uni-popup>
@@ -150,7 +161,7 @@
 </template>
 
 <script>
-    import $ from '../../common/tsRequest.js'
+	import $ from '../../common/tsRequest.js'
 	import WCompress from '@/components/w-compress/w-compress.vue'
 	let isok = true
 	var sourceType = [
@@ -165,7 +176,7 @@
 	]
 	export default {
 		components: {
-           WCompress
+			WCompress
 		},
 		data() {
 			return {
@@ -201,7 +212,7 @@
 				company_address: '',
 				company_phone: '',
 				tax_num: '',
-				delivery_number:'',
+				delivery_number: '',
 				consignee: '',
 				consignee_address: '',
 				consignee_phone: '',
@@ -212,7 +223,7 @@
 				desc: '',
 				openid: '',
 				id: '',
-				curimg:[],
+				curimg: [],
 				popuptype: 'bottom',
 				Bookitems: [],
 				current: '',
@@ -225,67 +236,74 @@
 			this.tabCurrentIndex = 0;
 			let _openid = uni.getStorageSync('invoiceopenId');
 			this.openid = _openid
-			let _id=options.id
+			let _id = options.id
 			console.log(_id)
-			this.id=_id
-			this.tabCurrentIndex=options.type==1?0:1;
-			this.state=options.state
+			this.id = _id
+			this.tabCurrentIndex = options.type == 1 ? 0 : 1;
+			this.state = options.state
 			this.query(_id)
 		},
-
+		onShow: function() {
+			this.$nextTick(function() {
+				this.$refs.popup.close()
+			})
+		},
 		methods: {
 			//加开票人信息联系人
-			addBookinfo(){
-				let obj={
-						value: '',
-						phone:'',
-						name: ''
+			addBookinfo() {
+				uni.navigateTo({
+					url: '../bookmanage/index'
+				})
+				return false;
+				// let obj={
+				// 		value: '',
+				// 		phone:'',
+				// 		name: ''
+				// 	}
+				// this.Bookitems=this.Bookitems.concat(obj)	
+			},
+			del(id) {
+				this.Bookitems.some((item, i) => {
+					if (i == id) {
+						this.Bookitems.splice(i, 1)
+						//在数组的some方法中，如果return true，就会立即终止这个数组的后续循环
+						return true
 					}
-				this.Bookitems=this.Bookitems.concat(obj)	
+				})
+				this.current = ''
 			},
-			bookedit(item){
-				console.log(item)
-				let obj={}
-				obj.openid=this.openid
-				obj.name=item.name
-				obj.address=item.value
-				obj.phone=item.phone
-				let url='/erp/addressBook/edit'
-				if(item.id==undefined||item.id==''){
-					url='/erp/addressBook/add'
-				}else{
-					obj.id=item.id
-					url='/erp/addressBook/edit'
+			//删除开票人信息联系人
+			bookchoosedel() {
+				let _id = []
+				_id.push(this.Bookitems[this.current].id)
+				console.log(_id)
+				let _data = {
+					id: _id
 				}
-				console.log(item.id)
-				if(item.name!=''&&item.value!=''&&item.phone!=''){
-					$.post(url,obj).then(res=>{
-						if(res.code==0){
-							if(item.id==undefined||item.id==''){
-								uni.showToast({
-									title: "新增成功!"
-								})
-							}else{
-								uni.showToast({
-									title: "修改成功!"
-								})
-							}
-							
-						}else{
-							uni.showToast({
-								image: '../../static/image/error.png',
-								title: res.message
-							});
-							return false;
-						}
-					}).catch(err=>{
-						
-					})
-				}
-					
-				
+
+				$.post('/erp/addressBook/del', qs.stringify(_data)).then(res => {
+					console.log(res)
+					if (res.code == 0) {
+						uni.showToast({
+							title: '删除成功'
+						})
+						this.del(this.current)
+					} else {
+						uni.showToast({
+							image: '../../static/image/error.png',
+							title: '删除成功'
+						})
+					}
+				}).catch(err => {
+					console.log(err)
+				})
 			},
-			bookclose(){
+			bookedit(item) {
+				uni.navigateTo({
+					url: '../bookmanageedit/index?id=' + item.id
+				})
+			},
+			bookclose() {
 				this.$refs.popup.close()
 				// 需要执行 done 才能关闭对话框
 			},
@@ -296,40 +314,41 @@
 						break;
 					}
 				}
+			},
+			bookchooseok(){
 				console.log(this.current)
 				this.consignee=this.Bookitems[this.current].name
 				this.consignee_address=this.Bookitems[this.current].value
 				this.consignee_phone=this.Bookitems[this.current].phone
 				this.$refs.popup.close()
-				
 			},
 			confirmShare() {
 				this.$refs.popup.open()
-				let obj={
-					limit:10,
-					page:1,
-					openid:this.openid
+				let obj = {
+					limit: 10,
+					page: 1,
+					openid: this.openid
 				}
-				this.Bookitems=[]
-				this.current=''
-				$.post('/erp/addressBook/index',obj).then(res=>{
+				this.Bookitems = []
+				this.current = ''
+				$.post('/erp/addressBook/index', obj).then(res => {
 					console.log(res)
-					if(res.code==0){
-						let arr=[]
-						let newarr=res.data.data.forEach((item, index)=>{
-							let cobj={}
-							 cobj.id=item.id
-							 cobj.name=item.name
-							 cobj.value=item.address
-							 cobj.phone=item.phone
-							 arr.push(cobj)
+					if (res.code == 0) {
+						let arr = []
+						let newarr = res.data.data.forEach((item, index) => {
+							let cobj = {}
+							cobj.id = item.id
+							cobj.name = item.name
+							cobj.value = item.address
+							cobj.phone = item.phone
+							arr.push(cobj)
 						});
-							
+
 						console.log(arr)
-						this.Bookitems=arr
+						this.Bookitems = arr
 					}
-				}).catch(err=>{
-					
+				}).catch(err => {
+
 				})
 			},
 			change(e) {
@@ -342,97 +361,100 @@
 				})
 				done()
 			},
-			query(id){
-					let data={
-						id
-					}
-				    let t = this;
-					let url = "/erp/invoice/detail";
-					let params =data;
-					$.post(url,params).then(res =>{
-						console.log(res)
-			            if(res.code==0){
-							this.waybtnIndex=res.data.way=='1'?1:2;
-							if(this.waybtnIndex==1){
-								this.waybtn=[
-									{
-										text: '纸质发票',
-										type: 1
-									}
-								]
-							}else{
-								this.waybtn= [
-									
-									{
-										text: '电子发票',
-										type: 2
-									}
-								]
-							}
-							this.bank=res.data.bank
-							this.bank_num=res.data.bank_num
-							this.change_reason=res.data.change_reason
-							this.change_times=res.data.change_times
-							this.company_address=res.data.company_address
-							this.company_name=res.data.company_name
-							this.company_phone=res.data.company_phone
-							this.consignee=res.data.consignee
-							this.consignee_address=res.data.consignee_address
-							this.consignee_email=res.data.consignee_email
-							this.consignee_phone=res.data.consignee_phone
-							this.create_time=res.data.create_time
-							this.delivery_number=res.data.delivery_number
-							this.desc=res.data.desc
-							this.file=res.data.file
-							this.invoice_num=res.data.invoice_num
-							this.is_del=res.data.is_del
-							this.logistics_num=res.data.logistics_num
-							this.peisong_time=res.data.peisong_time
-							this.postil=res.data.postil
-							this.return_reason=res.data.return_reason
-							this.state=res.data.state
-							this.tax_num=res.data.tax_num
-							this.type=res.data.type
-							this.way=res.data.way
-							let arrimg = res.data.file.split(";")
-							console.log(arrimg)
-							var imgs=[]
-							this.curimg=arrimg
-							arrimg.forEach(function(item,index) {
-								console.log(item)
-								if(item != '') {
-									let url = 'http://www.zjcoldcloud.com/managesystem/storage/app/public/uploads/invoice/' + item;
-									console.log(url)
-									imgs.push(url)
+			query(id) {
+				let data = {
+					id
+				}
+				let t = this;
+				let url = "/erp/invoice/detail";
+				let params = data;
+				$.post(url, params).then(res => {
+					console.log(res)
+					if (res.code == 0) {
+						this.waybtnIndex = res.data.way == '1' ? 1 : 2;
+						if (this.waybtnIndex == 1) {
+							this.waybtn = [{
+								text: '纸质发票',
+								type: 1
+							}]
+						} else {
+							this.waybtn = [
+
+								{
+									text: '电子发票',
+									type: 2
 								}
-							});
-							console.log(imgs)
-							this.imageList=imgs
-							this.multi=imgs
+							]
 						}
-						
-					}).catch(err =>{
-						console.log(err)
-					})
+						this.bank = res.data.bank
+						this.bank_num = res.data.bank_num
+						this.change_reason = res.data.change_reason
+						this.change_times = res.data.change_times
+						this.company_address = res.data.company_address
+						this.company_name = res.data.company_name
+						this.company_phone = res.data.company_phone
+						this.consignee = res.data.consignee
+						this.consignee_address = res.data.consignee_address
+						this.consignee_email = res.data.consignee_email
+						this.consignee_phone = res.data.consignee_phone
+						this.create_time = res.data.create_time
+						this.delivery_number = res.data.delivery_number
+						this.desc = res.data.desc
+						this.file = res.data.file
+						this.invoice_num = res.data.invoice_num
+						this.is_del = res.data.is_del
+						this.logistics_num = res.data.logistics_num
+						this.peisong_time = res.data.peisong_time
+						this.postil = res.data.postil
+						this.return_reason = res.data.return_reason
+						this.state = res.data.state
+						this.tax_num = res.data.tax_num
+						this.type = res.data.type
+						this.way = res.data.way
+						let arrimg = res.data.file.split(";")
+						console.log(arrimg)
+						var imgs = []
+						this.curimg = arrimg
+						arrimg.forEach(function(item, index) {
+							console.log(item)
+							if (item != '') {
+								let url =
+									'http://www.zjcoldcloud.com/managesystem/storage/app/public/uploads/invoice/' +
+									item;
+								console.log(url)
+								imgs.push(url)
+							}
+						});
+						console.log(imgs)
+						this.imageList = imgs
+						this.multi = imgs
+					}
+
+				}).catch(err => {
+					console.log(err)
+				})
 			},
-			 onMulti() {
-			            uni.chooseImage({
-			                count: 9,
-			                success: res => {
-			                    uni.showLoading({ title: '图片压缩中...', mask: true })
-			                    this.$refs.wCompress.start(res.tempFilePaths)
-			                        .then(res => {
-			                            console.log(res)
-			                            this.multi = res
-			                            uni.hideLoading()
-			                        })
-			                        .catch(e => {
-			                            console.log(e)
-			                            uni.hideLoading()
-			                        })
-			                }
-			            })
-			        },
+			onMulti() {
+				uni.chooseImage({
+					count: 9,
+					success: res => {
+						uni.showLoading({
+							title: '图片压缩中...',
+							mask: true
+						})
+						this.$refs.wCompress.start(res.tempFilePaths)
+							.then(res => {
+								console.log(res)
+								this.multi = res
+								uni.hideLoading()
+							})
+							.catch(e => {
+								console.log(e)
+								uni.hideLoading()
+							})
+					}
+				})
+			},
 			changeTab(e) {
 				this.tabCurrentIndex = e.target.current;
 			},
@@ -440,24 +462,23 @@
 			tabClick(index) {
 				this.tabCurrentIndex = index;
 				console.log(index)
-				let arr=[]
-				if(index==1){
-					arr=[{
+				let arr = []
+				if (index == 1) {
+					arr = [{
 						text: '纸质发票',
 						type: 1
 					}]
-					this.waybtn=arr
-					this.waybtnIndex=1
-				}else{
-					arr=[
-						{
-							text: '电子发票',
-							type: 2
-						}]
-						this.waybtn=arr
-						this.waybtnIndex=2
+					this.waybtn = arr
+					this.waybtnIndex = 1
+				} else {
+					arr = [{
+						text: '电子发票',
+						type: 2
+					}]
+					this.waybtn = arr
+					this.waybtnIndex = 2
 				}
-				
+
 			},
 			//
 			tabwaybtn(index) {
@@ -515,7 +536,7 @@
 								title: "纳税人识别号不能为空"
 							});
 							return false;
-						}else {
+						} else {
 							obj = {
 								type: 1,
 								way: 1,
@@ -525,7 +546,7 @@
 								consignee_phone: this.consignee_phone,
 								company_name: this.company_name,
 								tax_num: this.tax_num,
-								desc: this.desc			
+								desc: this.desc
 							}
 							// 0 普通发票 1纸质
 							console.log(' 0 普通发票 1纸质')
@@ -560,7 +581,7 @@
 							consignee_email: this.consignee_email,
 							company_name: this.company_name,
 							tax_num: this.tax_num,
-							desc: this.desc						
+							desc: this.desc
 						}
 						// 0 普通发票 2电子
 					} else if (this.tabCurrentIndex == '1' && this.waybtnIndex == '1') {
@@ -704,13 +725,13 @@
 
 						// 1 专用发票 2电子
 					}
-                    if (this.delivery_number == '') {
-                    	uni.showToast({
-                    		image: '../../static/image/error.png',
-                    		title: "发货编号不能为空"
-                    	});
-                    	return false;
-                    }
+					if (this.delivery_number == '') {
+						uni.showToast({
+							image: '../../static/image/error.png',
+							title: "发货编号不能为空"
+						});
+						return false;
+					}
 					let imgs = this.imageList.map((value, index) => {
 						return {
 							name: "image" + index,
@@ -730,7 +751,7 @@
 					obj.openid = this.openid
 					obj.delivery_number = this.delivery_number
 					// return false;
-					$.post('/erp/invoice/add',obj).then(res => {
+					$.post('/erp/invoice/add', obj).then(res => {
 						console.log(res)
 						isok = false;
 						setTimeout(function() {
@@ -769,20 +790,23 @@
 				uni.chooseImage({
 					count: 9,
 					success: res => {
-						uni.showLoading({ title: '图片压缩中...', mask: true })
+						uni.showLoading({
+							title: '图片压缩中...',
+							mask: true
+						})
 						this.$refs.wCompress.start(res.tempFilePaths)
 							.then(res => {
 								this.multi = this.multi.concat(res)
 								// this.imageList=res
 								this.imageList = this.imageList.concat(res);
-								let curimages =res
+								let curimages = res
 								let imgs = curimages.map((value, index) => {
 									return {
 										name: "image" + index,
 										uri: value
 									}
 								});
-						        console.log(imgs)
+								console.log(imgs)
 								if (imgs.length <= 0) {
 									uni.showToast({
 										image: '../../static/image/error.png',
@@ -801,14 +825,15 @@
 										let result = JSON.parse(res.data)
 										if (result.code == 0) {
 											let imgs = result.data.file.split(";")
-						
-											let newArr = imgs.filter(function(item, index) {
+
+											let newArr = imgs.filter(function(item,
+											index) {
 												return item != ''
 											})
 											let oldimg = this.curimg
 											this.curimg = oldimg.concat(newArr)
 										}
-						
+
 									}
 								})
 								uni.hideLoading()
@@ -821,16 +846,16 @@
 				})
 
 			},
-            //查看发票案例
+			//查看发票案例
 			previewLizi: function(e) {
-				 let current = e.target.dataset.src
-				 let imgArr = [];
-			     imgArr.push(current);
-			     uni.previewImage({
-			          current: imgArr[0],
-			          urls: imgArr,
-			     });
-				
+				let current = e.target.dataset.src
+				let imgArr = [];
+				imgArr.push(current);
+				uni.previewImage({
+					current: imgArr[0],
+					urls: imgArr,
+				});
+
 			},
 			//预览图片
 			previewImage: function(e) {
@@ -859,6 +884,7 @@
 
 <style lang="scss">
 	@import "/static/css/upload-imgs.css";
+
 	page {
 		display: flex;
 		flex-wrap: wrap;
@@ -866,50 +892,59 @@
 		align-items: flex-start;
 		background-color: #FFFFFF;
 	}
+
 	.popup-content {
 		background-color: #fff;
 		padding: 15px;
-		.bookTitle{
-	        display: flex;
+
+		.bookTitle {
+			display: flex;
 			justify-content: center;
 			align-items: center;
 			color: #333333;
 			font-size: 15px;
 			font-weight: 600;
-			.bookclose{
+
+			.bookclose {
 				position: absolute;
 				right: 30upx;
-				
+
 			}
 		}
-		.bookListItem{
+
+		.bookListItem {
 			font-size: 14px;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			margin: 30upx 0;
-			.bookItemlt{
+			margin-top: 20upx;
+			.bookItemlt {
 				display: flex;
 				align-items: center;
-				.bookItemcenter{
+
+				.bookItemcenter {
 					display: flex;
 					flex-direction: column;
 					align-items: start;
-					.uni-input-input{
+
+					.uni-input-input {
 						font-size: 14px;
 					}
-					.bookCompany{
+
+					.bookCompany {
 						width: 580upx;
 					}
-					.bookname{
+
+					.bookname {
 						width: 200upx;
 					}
-					.bookphone{
+
+					.bookphone {
 						width: 380upx;
 					}
 				}
 			}
-	
+
 		}
 	}
 
@@ -984,7 +1019,11 @@
 		border-radius: 10upx;
 		color: #FFFFFF;
 	}
-
+    .overhide{
+		overflow: hidden;
+		text-overflow:ellipsis;
+		white-space: nowrap;
+	}
 	.uploads {
 		width: 92%;
 	}
@@ -1030,15 +1069,20 @@
 						height: 80upx;
 						font-size: 28upx;
 					}
-					.return{
+
+					.return {
 						display: inline-block;
 						width: 14upx;
 						height: 25upx;
-						transform:rotate(180deg);
-						-ms-transform:rotate(180deg); 	/* IE 9 */
-						-moz-transform:rotate(180deg); 	/* Firefox */
-						-webkit-transform:rotate(180deg); /* Safari 和 Chrome */
-						-o-transform:rotate(180deg); 	/* Opera */
+						transform: rotate(180deg);
+						-ms-transform: rotate(180deg);
+						/* IE 9 */
+						-moz-transform: rotate(180deg);
+						/* Firefox */
+						-webkit-transform: rotate(180deg);
+						/* Safari 和 Chrome */
+						-o-transform: rotate(180deg);
+						/* Opera */
 					}
 				}
 			}
@@ -1119,11 +1163,13 @@
 			max-width: 414px;
 			margin: 0 auto;
 		}
-        .template-img{
+
+		.template-img {
 			display: inline-block;
-			    width: 110px;
-			    height: 50px;
+			width: 110px;
+			height: 50px;
 		}
+
 		.upload-fh {
 			background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAD1klEQVRoQ+XbTYhWVRgH8P8fwZUguFKi2pShbvqg2lhhG0PJlc40zQg62WhDg+jklIo1wViUNgwVTGSWWMngyvCjVdLHLrHaJaOBIIK2DHL7lweegcvL48D7vveee7xztu+d972/Ofec8zznPJe4T5qkRQC2AVgP4A8AMySvt3v7bPcP6rhe0lIAJwFsKvz+CZLb272f7MGSHnDsiy24WZKPNQosyUDWs88EsEGS3zQGLOkpx64OUG+T/LhdrF2f5SMt6QXHPhSghklOd4LNEixpo2OXBaitJL/rFJsdWFKvYxe3oO4A6Cd5phtsVmBJrwH4KgD9C+BVkj91i80GLGk3gKkA9I9jfy8DmwVY0kEAEwHoL8f+XRa2drCkDwG8E4B+A9BH8maZ2FrBkj4D8GYA+hHAKyT/KxtbG1iSRUiWCLS2045VFdjkYEm23HwPYHMAOk5yR1XQue9NFmlJskDCsC8FqCmSe6rGJuthSRYiGnZtgJogeSgFNglYkgX/hn08QI2RPJIKWzlYkqV1hn0kQL1B8ouU2ErBkixhN+zyADVA0j5L3iqZtCTZVoyBlrSILAmwNfZscqn/YOlgSf0AohTOkoBekj/XhS39kZa0E0A0Li0JMOzlOrGlgiWNAjgagCwJ6CF5tW5saWBJ7wEYD0CWBBj2Vg7YUsCSbB19KwBdcOz/uWC7BkuyzbRdAchOBfpygs7dS8eztKRvAQwEqGMkh3LEdtzDkj4CMBagJkna5JVt66iHJUX56jjJ97OVdhN4SLJtGdueaW3N7GFTLqgxPNetC2qWLqDtUGtf8Hif93CyOetwAf0ugGjC+tXRzYm0Cui9AD4JevpPRzcnli6gXwfwZYC+5mGm4WttHa3D892xJAspTwXX3Pae/qVOcelgX7JednS042F58bm60JWAHb3Ot3lWBDg7N5qpA10Z2NFPO/rRADdE8lhqdKVgR69y9BMBbpTkZEp05WBHP+jo5wJc0qQjCdjRdrZkOfSGAJ0s6UgGdrSdHhq6J0An2ThICi4EKMcBDAZom7mtgKUZ58NFoCQrYrFiltZmSYehm1MBUOjpwwAOBGhLOgzdnBqPAno/gA8CtMXdhr5S5rJVyxhuBUgaAfBpALOkw9CXykJnAfYZ3Iq9vw5glnQY+mIZ6GzAjt7iJ49RraWhf+gWnRXY0RaY2Frd/GrawkT2vFfVPhz0aLPqpQvoJx29JkA3qyK+gF7p6GcD9AjJz9sd09mN4WDJutdbLTdIRq8IzPs/yB7sE9nCeW+p8Hjbm2nDAKwcahbAdGPfTGt3nM53/V00ckNMKWY8LAAAAABJRU5ErkJggg==');
 			background-repeat: no-repeat;
@@ -1336,7 +1382,12 @@
 				outline: none;
 			}
 		}
-
+       .footerbtn{
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+			margin-top: 30upx;
+		}
 
 	}
 </style>
