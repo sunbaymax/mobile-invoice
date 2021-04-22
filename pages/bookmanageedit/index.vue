@@ -32,7 +32,7 @@
 			</view>
 		</view>
 		<view class='btnbutton'>
-			<button type="primary" @click="nowgo">保存</button>
+			<button type="primary" @click="nowgo">保存并使用</button>
 		</view>
 	</view>
 </template>
@@ -173,6 +173,12 @@
 						uni.showToast({
 							title: "修改成功!"
 						})
+						var pages = getCurrentPages();
+						var currPage = pages[pages.length - 1];   //当前页面
+						var prevPage = pages[pages.length - 2];  //上一个页面
+						prevPage._data.consignee = this.name
+						prevPage._data.consignee_address =this.descaddress
+						prevPage._data.consignee_phone = this.phone
 						setTimeout(() => {
 							uni.navigateBack({
 						       delta: 1,

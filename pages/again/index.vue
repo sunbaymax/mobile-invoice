@@ -125,30 +125,38 @@
 					</uni-icons>
 				</view>
 				<view class="bookList">
-					<radio-group @change="radioChange"
-						style="display: flex;flex-direction: column;line-height: 60upx ;">
-						<view v-for="(item, index) in Bookitems" class="bookListItem" :key="item.name+item.id">
-							<view class="bookItemlt">
-								<radio :value="item.value" :checked="index === current" style="transform:scale(0.7)" />
-								<view class="bookItemcenter">
-									<view class="bookCompany overhide">
-										{{item.value}}
+					<view>
+						<scroll-view scroll-y="true" class="scroll-Y" style="max-height: 400px;">
+							<radio-group @change="radioChange"
+								style="display: flex;flex-direction: column;line-height: 60upx ;">
+								<view v-for="(item, index) in Bookitems" class="bookListItem" :key="item.name+item.id">
+									<view class="bookItemlt">
+										<radio :value="item.id" :checked="index === current"
+											style="transform:scale(0.7)" />
+										<view class="bookItemcenter">
+											<view class="bookCompany overhide">
+												{{item.value}}
+											</view>
+											<view style="display: flex;">
+												<text class="bookname overhide">{{item.name}}</text>
+												<text class="bookphone overhide">{{item.phone}}</text>
+											</view>
+										</view>
 									</view>
-									<view style="display: flex;">
-										<text class="bookname overhide">{{item.name}}</text>
-										<text class="bookphone overhide">{{item.phone}}</text>
+									<view class="bookItemrt">
+										<uni-icons type="compose" size="24" class="bookclose" @click="bookedit(item)"
+											v-show="item.value==''&&item.name==''&&item.phone==''"></uni-icons>
+										<uni-icons type="compose" size="24" class="bookclose" color="#007aff"
+											@click="bookedit(item)"
+											v-show="item.value!=''&&item.name!=''&&item.phone!=''"></uni-icons>
 									</view>
 								</view>
-							</view>
-							<view class="bookItemrt">
-							  <uni-icons type="compose" size="24" class="bookclose"  @click="bookedit(item)" v-show="item.value==''&&item.name==''&&item.phone==''"></uni-icons> 
-							  <uni-icons type="compose" size="24" class="bookclose" color="#007aff"  @click="bookedit(item)" v-show="item.value!=''&&item.name!=''&&item.phone!=''"></uni-icons>
-							</view>
-						</view>
-					</radio-group>
+							</radio-group>
+						</scroll-view>
+					</view>
 					<view class="footerbtn">
 						<uni-tag text="选择" type="success" :circle="true" @click="bookchooseok"></uni-tag>
-						<uni-tag text="删除" type="error" :circle="true"  @click="bookchoosedel"></uni-tag>
+						<uni-tag text="删除" type="error" :circle="true" @click="bookchoosedel"></uni-tag>
 						<uni-tag text="新增" type="primary" :circle="true" @click="addBookinfo"></uni-tag>
 						<!-- <button class="addbookbtn" type="warn" style="border-radius: 30px;" @click="addBookinfo" size="mini">删除</button>
 						<button class="addbookbtn" type="primary" style="border-radius: 30px;" @click="addBookinfo" size="mini">新增</button> -->
@@ -309,17 +317,17 @@
 			},
 			radioChange: function(evt) {
 				for (let i = 0; i < this.Bookitems.length; i++) {
-					if (this.Bookitems[i].value === evt.target.value) {
+					if (this.Bookitems[i].id === evt.target.value) {
 						this.current = i;
 						break;
 					}
 				}
 			},
-			bookchooseok(){
+			bookchooseok() {
 				console.log(this.current)
-				this.consignee=this.Bookitems[this.current].name
-				this.consignee_address=this.Bookitems[this.current].value
-				this.consignee_phone=this.Bookitems[this.current].phone
+				this.consignee = this.Bookitems[this.current].name
+				this.consignee_address = this.Bookitems[this.current].value
+				this.consignee_phone = this.Bookitems[this.current].phone
 				this.$refs.popup.close()
 			},
 			confirmShare() {
@@ -335,9 +343,11 @@
 					console.log(res)
 					if (res.code == 0) {
 						let arr = []
+						let _id=''
 						let newarr = res.data.data.forEach((item, index) => {
 							let cobj = {}
-							cobj.id = item.id
+							_id=String(item.id)
+							cobj.id = _id
 							cobj.name = item.name
 							cobj.value = item.address
 							cobj.phone = item.phone
@@ -827,7 +837,7 @@
 											let imgs = result.data.file.split(";")
 
 											let newArr = imgs.filter(function(item,
-											index) {
+												index) {
 												return item != ''
 											})
 											let oldimg = this.curimg
@@ -918,6 +928,7 @@
 			justify-content: space-between;
 			align-items: center;
 			margin-top: 20upx;
+
 			.bookItemlt {
 				display: flex;
 				align-items: center;
@@ -933,6 +944,8 @@
 
 					.bookCompany {
 						width: 580upx;
+						font-weight: 520;
+						font-size: 15px;
 					}
 
 					.bookname {
@@ -1019,11 +1032,13 @@
 		border-radius: 10upx;
 		color: #FFFFFF;
 	}
-    .overhide{
+
+	.overhide {
 		overflow: hidden;
-		text-overflow:ellipsis;
+		text-overflow: ellipsis;
 		white-space: nowrap;
 	}
+
 	.uploads {
 		width: 92%;
 	}
@@ -1343,6 +1358,7 @@
 			border: 1px solid #007AFF;
 			margin: 0 auto;
 			position: fixed;
+			z-index: 99;
 			bottom: 60upx;
 			left: 75upx;
 			border: none;
@@ -1382,7 +1398,8 @@
 				outline: none;
 			}
 		}
-       .footerbtn{
+
+		.footerbtn {
 			display: flex;
 			justify-content: space-around;
 			align-items: center;

@@ -64,7 +64,9 @@
 						</view>
 						<view class="caozubtn">
 							<text  @click="copy(item)">复制</text>
-							<text @click="binddelbtn(item.id)">删除</text>
+							<text @click="bindreturnbtn(item.id,item.state)" v-if="item.state==1||item.state==8">撤回</text>
+							<text @click="binddelbtn(item.id)" v-else>删除</text>
+							
 						</view>
 						
 						
@@ -241,6 +243,44 @@
 					
 				}
 			  
+			},
+			bindreturnbtn(id,state){
+				let _state=state==1?3:10
+				uni.showModal({
+				    title: '撤销提示',
+				    content: '请确定是否撤销发票？',
+				    success: function (result) {
+				        if (result.confirm) {
+				            console.log('用户点击确定');
+							console.log(id)
+							let obj={
+								id,
+								state:_state
+							}
+							$.post('/erp/invoice/modifyState',obj).then(res=>{
+								console.log(res)
+								if(res.code==0){
+									uni.showToast({
+										title: "撤销成功!"
+									});
+									setTimeout(() => {
+										window.location.reload()
+									}, 1500)
+								}else{
+									uni.showToast({
+										image: '../../static/image/error.png',
+										title: res.message
+									});
+									return false;
+								}
+							}).catch(err=>{
+								console.log(err)
+							})
+				        } else if (result.cancel) {
+				            console.log('用户点击取消');
+				        }
+				    }
+				});
 			},
 			//删除发票
 			binddelbtn(id){

@@ -34,7 +34,7 @@
 
 		<!-- <view :class="[tabCurrentIndex==1||waybtnIndex==2?'btnbutton':'btn']"> -->
 		<view class='btnbutton'>
-			<button type="primary" @click="nowgo">保存</button>
+			<button type="primary" @click="nowgo">保存并使用</button>
 		</view>
 	</view>
 </template>
@@ -66,6 +66,7 @@
 				descaddress: '',
 				showname: false,
 				showntel: false,
+				isok:true
 			};
 		},
 
@@ -126,60 +127,73 @@
 					this.value[2]
 				]
 			},
+			
 			nowgo() {
-				if (this.name == '') {
-					uni.showToast({
-						image: '../../static/image/error.png',
-						title: "请输入联系人姓名"
-					});
-					this.showname = false;
-					this.$nextTick(() => {
-						this.showname = true;
-					});
-					return false;
-				} else if (this.phone == '') {
-					uni.showToast({
-						image: '../../static/image/error.png',
-						title: "请输入联系人电话"
-					});
-					this.showntel = false;
-					this.$nextTick(() => {
-						this.showntel = true;
-					});
-					return false;
-				} else if (this.descaddress == '') {
-					uni.showToast({
-						image: '../../static/image/error.png',
-						title: "请完善联系人地址"
-					});
-					return false;
-				}
-				let obj = {}
-				obj.openid = this.openid
-				obj.name = this.name
-				obj.address = this.descaddress
-				obj.phone = this.phone
-				$.post('/erp/addressBook/add', obj).then(res => {
-					if (res.code == 0) {
-						uni.showToast({
-							title: "新增成功!"
-						})
-						setTimeout(() => {
-							uni.navigateBack({
-						       delta: 1,
-							})
-						}, 1500)
-					} else {
+				if (this.isok) {
+					if (this.name == '') {
 						uni.showToast({
 							image: '../../static/image/error.png',
-							title: res.message
+							title: "请输入联系人姓名"
+						});
+						this.showname = false;
+						this.$nextTick(() => {
+							this.showname = true;
+						});
+						return false;
+					} else if (this.phone == '') {
+						uni.showToast({
+							image: '../../static/image/error.png',
+							title: "请输入联系人电话"
+						});
+						this.showntel = false;
+						this.$nextTick(() => {
+							this.showntel = true;
+						});
+						return false;
+					} else if (this.descaddress == '') {
+						uni.showToast({
+							image: '../../static/image/error.png',
+							title: "请完善联系人地址"
 						});
 						return false;
 					}
-				}).catch(err => {
+					let obj = {}
+					obj.openid = this.openid
+					obj.name = this.name
+					obj.address = this.descaddress
+					obj.phone = this.phone
+					this.isok=false
+					setInterval(() => {
+						this.isok=true
+					}, 3000)
+					$.post('/erp/addressBook/add', obj).then(res => {
+						if (res.code == 0) {
+							uni.showToast({
+								title: "新增成功!"
+							})
+							setTimeout(() => {
+								var pages = getCurrentPages();
+								var currPage = pages[pages.length - 1]; 
+								var prevPage = pages[pages.length - 2]; 
+								prevPage._data.consignee = this.name
+								prevPage._data.consignee_address = this.descaddress
+								prevPage._data.consignee_phone = this.phone
+								uni.navigateBack({
+									delta: 1,
+								})
+							}, 1000)
+						} else {
+							uni.showToast({
+								image: '../../static/image/error.png',
+								title: res.message
+							});
+							return false;
+						}
+					}).catch(err => {
 
-				})
+					})
 
+				}
 			}
 		}
 	};
