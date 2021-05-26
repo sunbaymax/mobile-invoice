@@ -73,8 +73,9 @@
 					</view>
 				</view>
 			</view>
+			 <uni-load-more :status="status" :icon-size="16" :content-text="contentText"></uni-load-more>
 		</view>
-	   <uni-load-more :status="status" :icon-size="16" :content-text="contentText"></uni-load-more>
+	  
 	   </view>
 	   <view class="nomore" v-show="nomore">
 	   	<image src="../../static/image/nodata.png"></image>
@@ -513,8 +514,17 @@
 	.uni-easyinput{
 		width: 60%!important;
 	}
-
+    .fixed{
+		    position: fixed;
+		    z-index: 99;
+		    width: 100%;
+		    background: #fff;
+	}
 	.data{
+		position: absolute;
+		width: 100%;
+		top: 260upx;
+		z-index: 1;
 	    box-sizing: border-box;
 		.itemlist{
 			background: url(../../static/image/card.png) no-repeat center;

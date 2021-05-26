@@ -37,14 +37,6 @@
 					<view class="left">公司名称<text class="requisite">*</text>：</view>
 					<view class="right"><input class="uni-input" placeholder="请输入公司名称" v-model="company_name" disabled/></view>
 				</view>
-				<view class="aline">
-					<view class="left">纳税人识别号<text class="requisite">*</text>：</view>
-					<view class="right"><input class="uni-input" placeholder="请输入纳税人识别号" v-model="tax_num" disabled/></view>
-				</view>
-				<view class="aline">
-					<view class="left">发货编号<text class="requisite">*</text>：</view>
-					<view class="right"><input class="uni-input" placeholder="请输入发货编号" v-model="delivery_number" disabled/></view>
-				</view>
 				<view class="aline" v-show="tabCurrentIndex === 1">
 					<view class="left">经营地址<text class="requisite">*</text>：</view>
 					<view class="right"><input class="uni-input" placeholder="请输入经营地址" v-model="company_address" disabled/></view>
@@ -61,9 +53,20 @@
 					<view class="left">开户银行账号<text class="requisite">*</text>：</view>
 					<view class="right"><input class="uni-input" placeholder="请输入开户银行账号" v-model="bank_num" disabled/></view>
 				</view>
-
+				<view class="aline">
+					<view class="left">纳税人识别号<text class="requisite">*</text>：</view>
+					<view class="right"><input class="uni-input" placeholder="请输入纳税人识别号" v-model="tax_num" disabled/></view>
+				</view>
+				<view class="aline">
+					<view class="left">开票类型<text class="requisite">*</text>：</view>
+					<view class="right"><input class="uni-input" v-model="classify" disabled/></view>
+				</view>
+				<view class="aline">
+					<view class="left">{{payImg[payTypeIndex].val}}<text class="requisite">*</text>：</view>
+					<view class="right"><input class="uni-input" placeholder="请输入发货编号" v-model="delivery_number" disabled/></view>
+				</view>
 				<view class="bigaline info-table-row">
-					<view class="left">回执单<text class="requisite">*</text>：</view>
+					<view class="left">{{payImg[payTypeIndex].imgtxt}}<text class="requisite">*</text>：</view>
 					<view class="right table-row-right">
 						<view class="uploads">
 							<view class='upload-image-view'>
@@ -161,7 +164,16 @@
 				curimg:[],
 				return_reason:'',
 				change_reason:'',
-				postil:''
+				postil:'',
+				classify:'',
+				payTypeIndex:0,
+				payImg:[
+					{imgtxt:'回执单',title:'请您务必上传收货的中集智冷成品出库单,否则无法正常开票',imgs:['../../static/image/fahuodan.png'],val:'发货编号'},
+					{imgtxt:'工单截图',title:'请您务必上传维修报告和付款截图,否则无法正常开票',imgs:['../../static/image/gongdan.jpeg','../../static/image/pay.jpeg'],val:'工单号'},
+					{imgtxt:'付款截图',title:'请您务必上传年费截图,否则无法正常开票',imgs:['../../static/image/nianfei.jpeg','../../static/image/pay.jpeg'],val:'登录账号'},
+					{imgtxt:'付款截图',title:'请您务必上传短信购买截图,否则无法正常开票',imgs:['../../static/image/pay.jpeg'],val:'登录账号'},
+					{imgtxt:'付款截图',title:'请您务必上传语音购买截图,否则无法正常开票',imgs:['../../static/image/pay.jpeg'],val:'登录账号'},
+				]
 
 			};
 		},
@@ -251,6 +263,18 @@
 							this.tax_num=res.data.tax_num
 							this.type=res.data.type
 							this.way=res.data.way
+							this.payTypeIndex=res.data.classify-1
+							if(res.data.classify==1){
+								this.classify='采购产品'
+							}else if(res.data.classify==2){
+								this.classify='维修维护'
+							}else if(res.data.classify==3){
+								this.classify='服务费'
+							}else if(res.data.classify==3){
+								this.classify=='短信'
+							}else{
+								this.classify=='语音'
+							}
 							let arrimg = res.data.file.split(";")
 							console.log(arrimg)
 							var imgs=[]

@@ -50,11 +50,6 @@
 					<view class="left">纳税人识别号<text class="requisite">*</text>：</view>
 					<view class="right"><input class="uni-input" placeholder="请输入纳税人识别号" v-model="tax_num" /></view>
 				</view>
-				<view class="aline">
-					<view class="left">发货编号<text class="requisite">*</text>：</view>
-					<view class="right"><input class="uni-input" placeholder="请输入发货编号" v-model="delivery_number" />
-					</view>
-				</view>
 				<view class="aline" v-show="tabCurrentIndex === 1">
 					<view class="left">经营地址<text class="requisite">*</text>：</view>
 					<view class="right"><input class="uni-input" placeholder="请输入经营地址" v-model="company_address" />
@@ -72,36 +67,53 @@
 					<view class="left">开户银行账号<text class="requisite">*</text>：</view>
 					<view class="right"><input class="uni-input" placeholder="请输入开户银行账号" v-model="bank_num" /></view>
 				</view>
-
+				<view class="aline">
+					 <view class="left">开票分类<text class="requisite">*</text>：</view>
+					 <view class="right">
+				          <picker @change="payType" :range="payTypeArray" class="payType">
+				              <label :class="classify=='请选择开票分类'?'grey':'choosetxt'">{{ classify }}</label>
+				          </picker>
+				    </view>
+				  </view>
+				<view class="aline">
+					<view class="left">{{ payImg[payTypeIndex].val}}<text class="requisite">*</text>：</view>
+					<view class="right"><input class="uni-input" :placeholder="'请输入'+payImg[payTypeIndex].val" v-model="delivery_number"/>
+					</view>
+				</view>
 				<view class="bigaline info-table-row">
-					<view class="left">回执单<text class="requisite">*</text>：</view>
-					<view class="right table-row-right">
-						<view class="uploads">
-							<view class='upload-image-view'>
-								<block v-for="(image,index) in imageList" :key="index">
-									<view class='image-view'>
-										<image :src="image" :data-src="image" @tap="previewImage"></image>
-										<view class='del-btn' :data-index="index" @tap='deleteImage'>
-											<view class='baicha'></view>
+						<view class="left">{{payImg[payTypeIndex].imgtxt}}<text class="requisite">*</text>：</view>
+						<view class="right table-row-right">
+							<view class="uploads">
+								<view class='upload-image-view'>
+									<block v-for="(image,index) in imageList" :key="index">
+										<view class='image-view'>
+											<image :src="image" :data-src="image" @tap="previewImage"></image>
+											<view class='del-btn' :data-index="index" @tap='deleteImage'>
+												<view class='baicha'></view>
+											</view>
 										</view>
+									</block>
+									<view class='add-view' v-if="multi.length < imageLength" @tap="chooseImage">
+										<view class="cross">
+											<view class="transverse-line"></view>
+											<view class="vertical-line"></view>
+										</view>
+					
 									</view>
-								</block>
-								<view class='add-view' v-if="multi.length < imageLength" @tap="chooseImage">
-									<view class="cross">
-										<view class="transverse-line"></view>
-										<view class="vertical-line"></view>
+									<view class='info'>{{payImg[payTypeIndex].title}}。示例如下：
+									<view class="payImgs">
+										<template v-for="(item,index) in payImg[payTypeIndex].imgs" >
+											<image :src="item" :data-src="item" class="template-img" @tap="previewLizi"></image>
+										</template>
 									</view>
-
-								</view>
-								<view class='info'>请您务必上传收货的中集智冷成品出库单,否则无法正常开票。示例如下：
-									<image src="../../static/image/fahuodan.png"
-										data-src="../../static/image/fahuodan.png" class="template-img"
-										@tap="previewLizi"></image>
+										
+									  
+									</view>
 								</view>
 							</view>
 						</view>
 					</view>
-				</view>
+				
 
 				<view class="bigalinetea">
 					<view class="left">备注</view>
@@ -235,6 +247,16 @@
 				popuptype: 'bottom',
 				Bookitems: [],
 				current: '',
+				payTypeArray:['采购产品','维修维护','服务费','短信','语音'],
+				payTypeIndex:0,
+				classify:'请选择开票分类',
+				payImg:[
+					{imgtxt:'回执单',title:'请您务必上传收货的中集智冷成品出库单,否则无法正常开票',imgs:['../../static/image/fahuodan.png'],val:'发货编号'},
+					{imgtxt:'工单截图',title:'请您务必上传维修报告和付款截图,否则无法正常开票',imgs:['../../static/image/gongdan.jpeg','../../static/image/pay.jpeg'],val:'工单号'},
+					{imgtxt:'付款截图',title:'请您务必上传年费截图,否则无法正常开票',imgs:['../../static/image/nianfei.jpeg','../../static/image/pay.jpeg'],val:'登录账号'},
+					{imgtxt:'付款截图',title:'请您务必上传短信购买截图,否则无法正常开票',imgs:['../../static/image/pay.jpeg'],val:'登录账号'},
+					{imgtxt:'付款截图',title:'请您务必上传语音购买截图,否则无法正常开票',imgs:['../../static/image/pay.jpeg'],val:'登录账号'},
+				]
 
 			};
 		},
@@ -257,6 +279,10 @@
 			})
 		},
 		methods: {
+			payType(e) {
+			    this.payTypeIndex = e.target.value;
+			    this.classify=this.payTypeArray[this.payTypeIndex]
+			},
 			//加开票人信息联系人
 			addBookinfo() {
 				uni.navigateTo({
@@ -421,6 +447,18 @@
 						this.tax_num = res.data.tax_num
 						this.type = res.data.type
 						this.way = res.data.way
+						this.payTypeIndex=res.data.classify-1
+						if(res.data.classify==1){
+							this.classify='采购产品'
+						}else if(res.data.classify==2){
+							this.classify='维修维护'
+						}else if(res.data.classify==3){
+							this.classify='服务费'
+						}else if(res.data.classify==3){
+							this.classify=='短信'
+						}else{
+							this.classify=='语音'
+						}
 						let arrimg = res.data.file.split(";")
 						console.log(arrimg)
 						var imgs = []
@@ -735,13 +773,21 @@
 
 						// 1 专用发票 2电子
 					}
-					if (this.delivery_number == '') {
+					if (this.classify == '请选择开票分类') {
 						uni.showToast({
 							image: '../../static/image/error.png',
-							title: "发货编号不能为空"
+							title: '请选择开票分类'
 						});
 						return false;
 					}
+					if (this.delivery_number == '') {
+						uni.showToast({
+							image: '../../static/image/error.png',
+							title: "请输入"+this.payImg[this.payTypeIndex].val
+						});
+						return false;
+					}
+					
 					let imgs = this.imageList.map((value, index) => {
 						return {
 							name: "image" + index,
@@ -752,10 +798,23 @@
 					if (imgs.length <= 0) {
 						uni.showToast({
 							image: '../../static/image/error.png',
-							title: "请上传回执单"
+							title: '请上传'+this.payImg[this.payTypeIndex].imgtxt
 						});
 						return false;
 					}
+					let _classify=''
+					if(this.classify=='采购产品'){
+						_classify=1
+					}else if(this.classify=='维修维护'){
+						_classify=2
+					}else if(this.classify=='服务费'){
+						_classify=3
+					}else if(this.classify=='短信'){
+						_classify=4
+					}else{
+						_classify=5
+					}
+					obj.classify=_classify
 					// obj.id = this.id
 					obj.file = s
 					obj.openid = this.openid

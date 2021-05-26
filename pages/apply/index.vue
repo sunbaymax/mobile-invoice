@@ -55,11 +55,6 @@
 					<view class="left">纳税人识别号<text class="requisite">*</text>：</view>
 					<view class="right"><input class="uni-input" placeholder="请输入纳税人识别号" v-model="tax_num" /></view>
 				</view>
-				<view class="aline">
-					<view class="left">发货编号<text class="requisite">*</text>：</view>
-					<view class="right"><input class="uni-input" placeholder="请输入发货编号" v-model="delivery_number" />
-					</view>
-				</view>
 				<view class="aline" v-show="tabCurrentIndex === 1">
 					<view class="left">经营地址<text class="requisite">*</text>：</view>
 					<view class="right"><input class="uni-input" placeholder="请输入经营地址" v-model="company_address" />
@@ -77,9 +72,21 @@
 					<view class="left">开户银行账号<text class="requisite">*</text>：</view>
 					<view class="right"><input class="uni-input" placeholder="请输入开户银行账号" v-model="bank_num" /></view>
 				</view>
-
+				 <view class="aline">
+					 <view class="left">开票分类<text class="requisite">*</text>：</view>
+					 <view class="right">
+				          <picker @change="payType" :range="payTypeArray" class="payType">
+				              <label :class="classify=='请选择开票分类'?'grey':'choosetxt'">{{ classify }}</label>
+				          </picker>
+				    </view>
+				  </view>
+				<view class="aline">
+					<view class="left">{{ payImg[payTypeIndex].val}}<text class="requisite">*</text>：</view>
+					<view class="right"><input class="uni-input" :placeholder="'请输入'+payImg[payTypeIndex].val" v-model="delivery_number"/>
+					</view>
+				</view>
 				<view class="bigaline info-table-row">
-					<view class="left">回执单<text class="requisite">*</text>：</view>
+					<view class="left">{{payImg[payTypeIndex].imgtxt}}<text class="requisite">*</text>：</view>
 					<view class="right table-row-right">
 						<view class="uploads">
 							<view class='upload-image-view'>
@@ -98,10 +105,14 @@
 									</view>
 
 								</view>
-								<view class='info'>请您务必上传收货的中集智冷成品出库单,否则无法正常开票。示例如下：
-									<image src="../../static/image/fahuodan.png"
-										data-src="../../static/image/fahuodan.png" class="template-img"
-										@tap="previewLizi"></image>
+								<view class='info'>{{payImg[payTypeIndex].title}}。示例如下：
+								<view class="payImgs">
+									<template v-for="(item,index) in payImg[payTypeIndex].imgs" >
+										<image :src="item" :data-src="item" class="template-img" @tap="previewLizi"></image>
+									</template>
+								</view>
+									
+								  
 								</view>
 							</view>
 						</view>
@@ -249,15 +260,18 @@
 				id: '',
 				curimg: [],
 				popuptype: 'bottom',
-				Bookitems: [
-					// {
-					// 	value: '恒泰广场恒泰广场C座腾讯科技',
-					// 	name: '保国先生',
-					// 	phone:'13910756695',
-					// 	checked: 'true'
-					// },
-				],
+				Bookitems: [],
 				current: '',
+				payTypeArray:['采购产品','维修维护','服务费','短信','语音'],
+				payTypeIndex:0,
+				classify:'请选择开票分类',
+				payImg:[
+					{imgtxt:'回执单',title:'请您务必上传收货的中集智冷成品出库单,否则无法正常开票',imgs:['../../static/image/fahuodan.png'],val:'发货编号'},
+					{imgtxt:'工单截图',title:'请您务必上传维修报告和付款截图,否则无法正常开票',imgs:['../../static/image/gongdan.jpeg','../../static/image/pay.jpeg'],val:'工单号'},
+					{imgtxt:'付款截图',title:'请您务必上传年费截图,否则无法正常开票',imgs:['../../static/image/nianfei.jpeg','../../static/image/pay.jpeg'],val:'登录账号'},
+					{imgtxt:'付款截图',title:'请您务必上传短信购买截图,否则无法正常开票',imgs:['../../static/image/pay.jpeg'],val:'登录账号'},
+					{imgtxt:'付款截图',title:'请您务必上传语音购买截图,否则无法正常开票',imgs:['../../static/image/pay.jpeg'],val:'登录账号'},
+				]
 				
 			};
 		},
@@ -278,6 +292,10 @@
 			this.historyapply()
 		},
 		methods: {
+			payType(e) {
+			    this.payTypeIndex = e.target.value;
+			    this.classify=this.payTypeArray[this.payTypeIndex]
+			},
 			historyapply() {
 				let that = this
 				let data = {
@@ -723,13 +741,21 @@
 
 						// 1 专用发票 2电子
 					}
-					if (this.delivery_number == '') {
+					if (this.classify == '请选择开票分类') {
 						uni.showToast({
 							image: '../../static/image/error.png',
-							title: "发货编号不能为空"
+							title: '请选择开票分类'
 						});
 						return false;
 					}
+					if (this.delivery_number == '') {
+						uni.showToast({
+							image: '../../static/image/error.png',
+							title: "请输入"+this.payImg[this.payTypeIndex].val
+						});
+						return false;
+					}
+				
 					let imgs = this.imageList.map((value, index) => {
 						return {
 							name: "image" + index,
@@ -740,14 +766,27 @@
 					if (imgs.length <= 0) {
 						uni.showToast({
 							image: '../../static/image/error.png',
-							title: "请上传回执单"
+							title: '请上传'+this.payImg[this.payTypeIndex].imgtxt
 						});
 						return false;
 					}
 					// obj.id = this.id
 					obj.file = s
 					obj.delivery_number = this.delivery_number
-					console.log(obj)
+					let _classify=''
+					if(this.classify=='采购产品'){
+						_classify=1
+					}else if(this.classify=='维修维护'){
+						_classify=2
+					}else if(this.classify=='服务费'){
+						_classify=3
+					}else if(this.classify=='短信'){
+						_classify=4
+					}else{
+						_classify=5
+					}
+					obj.classify=_classify
+					// console.log(obj)
 					// return false;
 					$.post('/erp/invoice/add', obj).then(res => {
 						console.log(res)
@@ -1055,7 +1094,6 @@
 					text-align: left;
 					color: #333;
 					font-size: 28upx;
-
 					.requisite {
 						display: inline-block;
 						height: 100upx;
@@ -1071,7 +1109,17 @@
 						height: 80upx;
 						font-size: 28upx;
 					}
-
+                    .grey{
+						color: grey;
+						font-size: 28upx;
+					}
+					.choosetxt{
+						font-size: 28upx;
+						color: inherit;
+					}
+					.payImgs{
+						display: flex;
+					}
 					.return {
 						display: inline-block;
 						width: 14upx;
@@ -1112,7 +1160,11 @@
 				.right {
 					height: auto;
 					flex: 1;
-
+                    /deep/ uni-picker {
+                        position: relative;
+                        display: block;
+                        cursor: pointer;
+                    }
 					.uploadimgs {
 						display: inline-block;
 						height: 120upx;
@@ -1168,7 +1220,8 @@
 
 		.template-img {
 			display: inline-block;
-			width: 110px;
+			width: 100px;
+			margin-right: 3px;
 			height: 50px;
 		}
 
