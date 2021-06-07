@@ -77,7 +77,7 @@
 				  </view>
 				<view class="aline">
 					<view class="left">{{ payImg[payTypeIndex].val}}<text class="requisite">*</text>：</view>
-					<view class="right"><input class="uni-input" :placeholder="'请输入'+payImg[payTypeIndex].val" v-model="delivery_number"/>
+					<view class="right"><input class="uni-input" :placeholder="'请输入'+payImg[payTypeIndex].placeholder" v-model="delivery_number"/>
 					</view>
 				</view>
 				<view class="bigaline info-table-row">
@@ -251,11 +251,11 @@
 				payTypeIndex:0,
 				classify:'请选择开票分类',
 				payImg:[
-					{imgtxt:'回执单',title:'请您务必上传收货的中集智冷成品出库单,否则无法正常开票',imgs:['../../static/image/fahuodan.png'],val:'发货编号'},
-					{imgtxt:'工单截图',title:'请您务必上传维修报告和付款截图,否则无法正常开票',imgs:['../../static/image/gongdan.jpeg','../../static/image/pay.jpeg'],val:'工单号'},
-					{imgtxt:'付款截图',title:'请您务必上传年费截图,否则无法正常开票',imgs:['../../static/image/nianfei.jpeg','../../static/image/pay.jpeg'],val:'登录账号'},
-					{imgtxt:'付款截图',title:'请您务必上传短信购买截图,否则无法正常开票',imgs:['../../static/image/pay.jpeg'],val:'登录账号'},
-					{imgtxt:'付款截图',title:'请您务必上传语音购买截图,否则无法正常开票',imgs:['../../static/image/pay.jpeg'],val:'登录账号'},
+					{imgtxt:'回执单',title:'请上传中集智冷成品出库单,否则无法正常开票,如无法提供出库单,请出具有效付款凭证',imgs:['../../static/image/fahuodan.png'],val:'发货编号',placeholder:"发货编号"},
+					{imgtxt:'工单截图',title:'请您务必上传维修报告和付款截图,否则无法正常开票',imgs:['../../static/image/gongdan.jpeg','../../static/image/pay.jpeg'],val:'维修工单号',placeholder:"维修工单号例:16215667402409" },
+					{imgtxt:'付款截图',title:'请您务必上传年费截图,否则无法正常开票',imgs:['../../static/image/nianfei.jpeg','../../static/image/pay.jpeg'],val:'登录账号',placeholder:"登录温控平台账号"},
+					{imgtxt:'付款截图',title:'请您务必上传短信购买截图,否则无法正常开票',imgs:['../../static/image/pay.jpeg'],val:'登录账号',placeholder:"登录温控平台账号"},
+					{imgtxt:'付款截图',title:'请您务必上传语音购买截图,否则无法正常开票',imgs:['../../static/image/pay.jpeg'],val:'登录账号',placeholder:"登录温控平台账号"},
 				]
 
 			};

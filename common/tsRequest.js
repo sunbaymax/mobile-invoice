@@ -1,5 +1,5 @@
 //http.js
-const baseUrl = 'http://www.zjcoldcloud.com/managesystem_back/public/index.php';  //请求地址
+const baseUrl = 'http://www.zjcoldcloud.com/managesystem/public/index.php';  //请求地址
 //get请求封装
 function gets(url, data) {
 	var promise = new Promise((resolve, reject) => {
