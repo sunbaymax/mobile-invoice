@@ -533,7 +533,7 @@
 				this.waybtnIndex = index;
 			},
 			checkMobile(mobile) {
-				return RegExp(/^1[34578]\d{9}$/).test(mobile);
+				return RegExp(/^1[3456789]\d{9}$/).test(mobile);
 			},
 			nowgo() {
 				var a = this.curimg; //定义数组
@@ -865,9 +865,10 @@
 						})
 						this.$refs.wCompress.start(res.tempFilePaths)
 							.then(res => {
-								this.multi = this.multi.concat(res)
-								// this.imageList=res
-								this.imageList = this.imageList.concat(res);
+								// this.multi = this.multi.concat(res)
+								this.imageList=res
+								this.multi =res
+								//this.imageList = this.imageList.concat(res);
 								let curimages = res
 								let imgs = curimages.map((value, index) => {
 									return {
