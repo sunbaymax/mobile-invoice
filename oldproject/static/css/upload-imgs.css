@@ -21,9 +21,8 @@
 	font-family: PingFang-SC-Regular;
 	font-size: 24upx;
 	color: #ff4259;
-	height: 48upx;
+	height: auto;
 	margin-top: 15upx;
-	line-height: 28upx;
 }
  
 .upload-image-view .image-view {

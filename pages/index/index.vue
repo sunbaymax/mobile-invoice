@@ -38,6 +38,7 @@
 			}
 		},
 		onLoad() {
+			uni.hideShareMenu()  
 			if(window.localStorage.getItem('intoinvoiceindex')===null){
 				this.active=0
 			}else{

@@ -37,26 +37,45 @@
 					<view class="left">公司名称<text class="requisite">*</text>：</view>
 					<view class="right"><input class="uni-input" placeholder="请输入公司名称" v-model="company_name" disabled/></view>
 				</view>
-				<view class="aline" v-show="tabCurrentIndex === 1">
-					<view class="left">经营地址<text class="requisite">*</text>：</view>
-					<view class="right"><input class="uni-input" placeholder="请输入经营地址" v-model="company_address" disabled/></view>
-				</view>
-				<view class="aline" v-show="tabCurrentIndex === 1">
-					<view class="left">公司电话<text class="requisite">*</text>：</view>
-					<view class="right"><input class="uni-input" placeholder="请输入公司电话" v-model="company_phone" disabled/></view>
-				</view>
-				<view class="aline" v-show="tabCurrentIndex === 1">
-					<view class="left">开户银行<text class="requisite">*</text>：</view>
-					<view class="right"><input class="uni-input" placeholder="请输入开户银行" v-model="bank" disabled/></view>
-				</view>
-				<view class="aline" v-show="tabCurrentIndex === 1">
-					<view class="left">开户银行账号<text class="requisite">*</text>：</view>
-					<view class="right"><input class="uni-input" placeholder="请输入开户银行账号" v-model="bank_num" disabled/></view>
-				</view>
 				<view class="aline">
 					<view class="left">纳税人识别号<text class="requisite">*</text>：</view>
 					<view class="right"><input class="uni-input" placeholder="请输入纳税人识别号" v-model="tax_num" disabled/></view>
 				</view>
+				<view class="aline" v-show="tabCurrentIndex === 1">
+					<view class="left">经营地址<text class="requisite">*</text>：</view>
+					<view class="right"><input class="uni-input" placeholder="请输入经营地址" v-model="company_address" />
+					</view>
+				</view>
+				<view class="aline" v-show="tabCurrentIndex === 0">
+					<view class="left">经营地址：</view>
+					<view class="right"><input class="uni-input" placeholder="请输入经营地址" v-model="company_address" />
+					</view>
+				</view>
+				<view class="aline" v-show="tabCurrentIndex === 0">
+					<view class="left">公司电话：</view>
+					<view class="right"><input class="uni-input" placeholder="请输入公司电话" v-model="company_phone" /></view>
+				</view>
+				<view class="aline" v-show="tabCurrentIndex === 1">
+					<view class="left">公司电话<text class="requisite">*</text>：</view>
+					<view class="right"><input class="uni-input" placeholder="请输入公司电话" v-model="company_phone" /></view>
+				</view>
+				<view class="aline" v-show="tabCurrentIndex === 0">
+					<view class="left">开户银行：</view>
+					<view class="right"><input class="uni-input" placeholder="请输入开户银行" v-model="bank" /></view>
+				</view>
+				<view class="aline" v-show="tabCurrentIndex === 1">
+					<view class="left">开户银行<text class="requisite">*</text>：</view>
+					<view class="right"><input class="uni-input" placeholder="请输入开户银行" v-model="bank" /></view>
+				</view>
+				<view class="aline" v-show="tabCurrentIndex === 0">
+					<view class="left">开户银行账号：</view>
+					<view class="right"><input class="uni-input" placeholder="请输入开户银行账号" v-model="bank_num" /></view>
+				</view>
+				<view class="aline" v-show="tabCurrentIndex === 1">
+					<view class="left">开户银行账号<text class="requisite">*</text>：</view>
+					<view class="right"><input class="uni-input" placeholder="请输入开户银行账号" v-model="bank_num" /></view>
+				</view>
+				
 				<view class="aline">
 					<view class="left">开票类型<text class="requisite">*</text>：</view>
 					<view class="right"><input class="uni-input" v-model="classify" disabled/></view>

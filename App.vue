@@ -5,6 +5,7 @@
 			console.log('App Launch')
 		},
 		onShow: function() {
+			uni.hideShareMenu()  
 			console.log('App Show')
 		},
 		onHide: function() {

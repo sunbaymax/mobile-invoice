@@ -55,13 +55,30 @@
 					<view class="right"><input class="uni-input" placeholder="请输入经营地址" v-model="company_address" />
 					</view>
 				</view>
+				<view class="aline" v-show="tabCurrentIndex === 0">
+					<view class="left">经营地址：</view>
+					<view class="right"><input class="uni-input" placeholder="请输入经营地址" v-model="company_address" />
+					</view>
+				</view>
+				<view class="aline" v-show="tabCurrentIndex === 0">
+					<view class="left">公司电话：</view>
+					<view class="right"><input class="uni-input" placeholder="请输入公司电话" v-model="company_phone" /></view>
+				</view>
 				<view class="aline" v-show="tabCurrentIndex === 1">
 					<view class="left">公司电话<text class="requisite">*</text>：</view>
 					<view class="right"><input class="uni-input" placeholder="请输入公司电话" v-model="company_phone" /></view>
 				</view>
+				<view class="aline" v-show="tabCurrentIndex === 0">
+					<view class="left">开户银行：</view>
+					<view class="right"><input class="uni-input" placeholder="请输入开户银行" v-model="bank" /></view>
+				</view>
 				<view class="aline" v-show="tabCurrentIndex === 1">
 					<view class="left">开户银行<text class="requisite">*</text>：</view>
 					<view class="right"><input class="uni-input" placeholder="请输入开户银行" v-model="bank" /></view>
+				</view>
+				<view class="aline" v-show="tabCurrentIndex === 0">
+					<view class="left">开户银行账号：</view>
+					<view class="right"><input class="uni-input" placeholder="请输入开户银行账号" v-model="bank_num" /></view>
 				</view>
 				<view class="aline" v-show="tabCurrentIndex === 1">
 					<view class="left">开户银行账号<text class="requisite">*</text>：</view>
@@ -629,6 +646,10 @@
 							consignee_email: this.consignee_email,
 							company_name: this.company_name,
 							tax_num: this.tax_num,
+							company_address: this.company_address,
+							company_phone: this.company_phone,
+							bank: this.bank,
+							bank_num: this.bank_num,
 							desc: this.desc
 						}
 						// 0 普通发票 2电子
